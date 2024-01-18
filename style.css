@@ -1,0 +1,41 @@
+body{
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    display: flex;
+    flex-direction: column;
+}
+
+.profile{
+    display: flex;
+    /* flex-direction: row; */
+    justify-content: space-around;
+    padding-right: 10%;
+}
+
+.image-container img
+{
+    width: 200px;
+    border: 2px solid red;
+    border-radius: 50%;
+}
+
+#repositories
+{
+    display: grid;
+    /* grid-template-columns: auto auto auto; */
+    grid-template-columns: 1fr 1fr 1fr;
+    padding: 10px;
+}
+
+.repository{
+    margin: 10px;
+    border: 1px solid black;
+    padding: 10px;
+}
+.repository button
+{
+    padding: 10px 20px;
+    background-color: cornflowerblue;
+    color: aliceblue;
+    font-weight:800;
+    border: none;
+}
