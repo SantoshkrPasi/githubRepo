@@ -39,3 +39,35 @@ body{
     font-weight:800;
     border: none;
 }
+
+.page-containers
+{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.page-shift
+{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.page-shift li
+{
+
+    display: block;
+    border: 1px solid #ccc; 
+    padding: 0px 5px;
+}
+#prev
+{
+    border: 1px solid #ccc; 
+    padding: 10px; 
+    margin: 5px 0;    
+}
+#next
+{
+    border: 1px solid #ccc; 
+    padding: 10px; 
+    margin: 5px 0; 
+}

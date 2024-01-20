@@ -1,17 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Github</title>
     <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
     <div id="search-bar">
-            <input type="text" id="input" placeholder="Enter User">
-            <button onclick="getUser()" type="submit">Search</button>
-            <button>prev</button>
-            <button disabled>next</button>
+        <input type="text" id="input" placeholder="Enter User">
+        <button onclick="getUser()" type="submit">Search</button>
     </div>
     <main>
         <div class="profile">
@@ -21,14 +21,27 @@
             </div>
         </div>
         <div id="url"></div>
-            <div id="repositories"></div>
-            <div id="pagination"></div>
+        <div id="repositories"></div>
+        <div id="pagination"></div>
     </main>
 
-    <!-- ==============================================-->
-
-
-    <!-- ============================================= -->
+    <div class="page-containers">
+        <button onclick="getPrev()">prev</button>
+        <ul class="page-shift" id="page-shift-container">
+            <li>1</li>
+            <li>2</li>
+            <li>3</li>
+            <li>4</li>
+            <li>5</li>
+            <li>6</li>
+            <li>7</li>
+            <li>8</li>
+            <li>9</li>
+            <li>10</li>
+        </ul>
+        <button onclick="getNext()">next</button>
+    </div>
     <script src="script.js"></script>
 </body>
+
 </html>

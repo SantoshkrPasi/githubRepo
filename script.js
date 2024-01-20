@@ -2,6 +2,17 @@ const API = "https://api.github.com/users/";
 let url = null;
 let currentPage = 1;
 const perPage = 10;
+let repositoriesContainer = document.getElementById('repositories');
+
+const getNext = () =>{
+repoArr.forEach((item)=>{
+  repositoriesContainer.removeChild(item);
+  
+})
+currentPage += 1;
+console.log(repoArr , "check")
+}
+
 
 const getUser = async () => {
     const user = document.getElementById("input").value;
@@ -19,13 +30,15 @@ const getUser = async () => {
         <p>${totalRepo.twitter_username}</p>`
     // });
  
-    const Repo = await fetch(API + user + "/repos" + `?per_page=${perPage}&page=${currentPage}`);
+    const Repo = await fetch(API + user + "/repos" + `?per_page=${perPage}&page=${currentPage}`)
     const data = await Repo.json();
     displayRepositories(data);
 }
+ 
 
+let repoArr = [];
 function displayRepositories(repositories) {
-    const repositoriesContainer = document.getElementById('repositories');
+   
     repositoriesContainer.innerHTML = '';
 
     repositories.forEach(repo => {
@@ -47,10 +60,18 @@ function displayRepositories(repositories) {
         repoElement.appendChild(languageButton);
 
         repositoriesContainer.appendChild(repoElement);
+        repoArr.push(repoElement);
+
     });
+
+
 }
 
+const number_of_page = document.getElementById("page-shift-container");
 
 
-// ========================================================================================
+
+
+
+
 
