@@ -10,6 +10,7 @@ repoArr.forEach((item)=>{
   
 })
 currentPage += 1;
+console.log(object)
 console.log(repoArr , "check")
 }
 
