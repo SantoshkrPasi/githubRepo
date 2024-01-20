@@ -14,7 +14,7 @@ body{
 .image-container img
 {
     width: 200px;
-    border: 2px solid red;
+    /* border: 2px solid red; */
     border-radius: 50%;
 }
 
@@ -40,35 +40,35 @@ body{
     border: none;
 }
 
-.page-containers
+#page-containers
 {
     display: flex;
     justify-content: center;
     align-items: center;
 }
-.page-shift
+#page-shift-container
 {
     display: flex;
     justify-content: center;
     align-items: center;
+    list-style: none; 
+    padding: 0; 
 }
-.page-shift li
+#page-shift-container li
 {
 
     display: block;
     border: 1px solid #ccc; 
     padding: 0px 5px;
     cursor: pointer;
+    margin: 0;
 }
-#prev
-{
-    border: 1px solid #ccc; 
-    padding: 10px; 
-    margin: 5px 0;    
+#prev,
+#next {
+    border: 1px solid #ccc;
+    padding: 10px;
+    margin: 5px 0;  
 }
-#next
-{
-    border: 1px solid #ccc; 
-    padding: 10px; 
-    margin: 5px 0; 
-}
+
+
+
