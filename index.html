@@ -13,7 +13,6 @@
         <input type="text" id="input" placeholder="Enter User" >
         <button onclick="searchUser(); "  type="submit">Search</button>
     </div>
-  
     <main id="main">
         <div class="profile">
             <div id="image" class="image-container">
@@ -22,9 +21,12 @@
             </div>
         </div>
         <div id="url"></div>
-        <!-- <div id="required_repo"></div> -->
+        <div id="repo-count">
+            <label>Select Per Page Repos:</label>
+            <input type="number" id="repo-count-change" value="10" />
+        </div>
         <div id="repositories">
-            <!-- <div class="loader" id="loader-container"></div> -->
+           
         </div> 
     </main>
     <div id="page-containers" class="toggle">

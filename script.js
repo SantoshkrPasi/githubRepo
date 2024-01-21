@@ -43,7 +43,7 @@ next_button.addEventListener('click', () => {
 
  
   const searchUser = async (current) => {
-
+   document.getElementById("repo-count").style.display='block';
     repositoriesContainer.innerHTML = "";
     const load = document.createElement('div');
     load.classList.add("loader");
@@ -63,24 +63,21 @@ next_button.addEventListener('click', () => {
   
    
     const totalRepo = await fetchRepo.json();
-    totalpages = Math.ceil(totalRepo.public_repos / 10);
+    totalpages = Math.ceil(totalRepo.public_repos / perPage);
 
 
     document.getElementById("url").innerHTML =`<img src="./hyperlink.png" alt="image"> <a href="${totalRepo.html_url}" target="_blank">${totalRepo.html_url}</a>`
-    // document.getElementById("url").innerHTML = `<a href="${totalRepo.html_url}" target="_blank">${totalRepo.html_url}</a>`;
-
-
-
     const image = document.getElementById("image");
     image.innerHTML = `<img src=${totalRepo.avatar_url}/>`;
     const detail = document.getElementById("details");
     detail.innerHTML = `<h1>${totalRepo.name}</h1>
           <p>${totalRepo.bio}</p>
-          <p>${totalRepo.location}</p>
-          <p>${totalRepo.twitter_username}</p>`;
-    const Repo = await fetch(
-      API + user + "/repos" + `?per_page=${perPage}&page=${current}`
-    );
+          <section><img src="./map.png" alt="image"><p>${totalRepo.location}</p></section>
+          ${totalRepo.twitter_username !== null ? `<p>Twitter : https://twitter.com/${totalRepo.twitter_username}</p>` : ''}`;
+          const Repo = await fetch( API + user + "/repos" + `?per_page=${perPage}&page=${current}`
+
+          );
+    
     
     var pageContainer = document.getElementById('page-containers');
     if (!pageContainer.classList.contains('show-children')) {
@@ -89,12 +86,14 @@ next_button.addEventListener('click', () => {
     
 
     const data = await Repo.json();
+
     if (data.message === "Not Found") {
       repositoriesContainer.innerHTML = "No repositories found for the user";
       return;
     }
 
     repositoriesContainer.removeChild(load);
+
     displayRepositories(data);
     const repo_tabs_container = document.getElementById("page-shift-container"); 
     repo_tabs_container.innerHTML = "";
@@ -121,15 +120,15 @@ const getUser = async (current) => {
 
 
   const totalRepo = await fetchRepo.json();
-  totalpages = Math.ceil(totalRepo.public_repos / 10);
-  document.getElementById("url").innerHTML = `<a href="${totalRepo.html_url}" target="_blank">${totalRepo.html_url}</a>`;
+  totalpages = Math.ceil(totalRepo.public_repos / perPage);
+  document.getElementById("url").innerHTML =`<img src="./hyperlink.png" alt="image"> <a href="${totalRepo.html_url}" target="_blank">${totalRepo.html_url}</a>`
   const image = document.getElementById("image");
   image.innerHTML = `<img src=${totalRepo.avatar_url}/>`;
   const detail = document.getElementById("details");
   detail.innerHTML = `<h1>${totalRepo.name}</h1>
         <p>${totalRepo.bio}</p>
-        <p>${totalRepo.location}</p>
-        <p>${totalRepo.twitter_username}</p>`;
+        <section><img src="./map.png" alt="image"><p>${totalRepo.location}</p></section>
+        ${totalRepo.twitter_username !== null ? `<p>Twitter : https://twitter.com/${totalRepo.twitter_username}</p>` : ''}`;
   const Repo = await fetch(
     API + user + "/repos" + `?per_page=${perPage}&page=${current}`
   );
@@ -155,10 +154,13 @@ const getUser = async (current) => {
 
 
 
-function displayRepositories(repositories) {
+async function displayRepositories(repositories) {
   // repositoriesContainer.innerHTML = "";
+  // repositories.
   
-  repositories.forEach((repo) => {
+  for(let i = 0 ; i <repositories.length ; ++i)
+  {
+    const repo = repositories[i];
     const repoLink = document.createElement("a");
     repoLink.href = repo.html_url;
     repoLink.target = "_blank";
@@ -173,14 +175,19 @@ function displayRepositories(repositories) {
     descriptionElement.textContent =
       repo.description || "No description available.";
     repoElement.appendChild(descriptionElement);
-
+      
+   
+    const langData = await fetch(repo.languages_url);
+    const langArr = await langData.json()
+    Object.keys(langArr).forEach(lang =>{
     const languageButton = document.createElement("button");
-    languageButton.textContent = repo.language || "Not specified";
+    languageButton.textContent = lang || "Not specified";
     repoElement.appendChild(languageButton);
-
+    })
     repositoriesContainer.appendChild(repoElement);
     repoArr.push(repoElement);
-  });
+    // console.log(Object.keys(langData));
+  }
 }
 
 function createRequiredPage(totalpages) {
@@ -216,5 +223,18 @@ function handleListItemClick(event) {
 
 
 
+document.getElementById("repo-count-change").addEventListener("input", function(event) {
+   perPage = event.target.value;
 
+  if (perPage > 100) {
+      perPage = 100;
+      event.target.value = "100";
+  }
+  if(perPage < 1)
+  {
+    perPage = 1;
+    event.target.value = "1";
+  }
+  searchUser();  
+});
 
