@@ -8,31 +8,117 @@ let particular_page = null;
 let totalpages = null;
 let repositoriesContainer = document.getElementById("repositories");
 
+// states for tabs
+let activeTab = 1;
 
   const prev_button = document.getElementById("prev");
   const next_button = document.getElementById("next");
   prev_button.addEventListener("click", () => {
     currentPage = currentPage > 1 ? currentPage - 1 : 1;
     getUser(currentPage);
+    if(activeTab == 1)
+    return;
+    const prevtab = document.getElementById('list-' + activeTab)
+    prevtab.style.backgroundColor = "white"
+    activeTab--;
+    const nextTab = document.getElementById('list-' + activeTab)
+    nextTab.style.backgroundColor = "#ADD8E6";
+   console.log(tab)
+
 });
+
 next_button.addEventListener('click', () => {
     currentPage = currentPage < totalpages ? currentPage + 1 : totalpages;
     getUser(currentPage);
+    if(activeTab == totalpages)
+    return;
+    const prevtab = document.getElementById('list-' + activeTab)
+    prevtab.style.backgroundColor = "white"
+    activeTab++;
+    const nextTab = document.getElementById('list-' + activeTab)
+    nextTab.style.backgroundColor = "#ADD8E6";
+   console.log(tab)
+
   });
 
-
-
  
+  const searchUser = async (current) => {
+
+    repositoriesContainer.innerHTML = "";
+    const load = document.createElement('div');
+    load.classList.add("loader");
+    repositoriesContainer.appendChild(load);
+
+    // const loader= document.getElementById("loader-container")
+    // console.log("loader:",loader)
+    // loader.classList.add('loaderActive')
+    
+    const user = document.getElementById("input").value;
+    const fetchRepo = await fetch(API + user);
+    if (!fetchRepo.ok) {
+      document.getElementById("main").innerHTML = "<h1>User not found</h1>";
+      document.getElementById("main").style.textAlign = "center";    
+      return;
+    }
+  
+   
+    const totalRepo = await fetchRepo.json();
+    totalpages = Math.ceil(totalRepo.public_repos / 10);
 
 
+    document.getElementById("url").innerHTML =`<img src="./hyperlink.png" alt="image"> <a href="${totalRepo.html_url}" target="_blank">${totalRepo.html_url}</a>`
+    // document.getElementById("url").innerHTML = `<a href="${totalRepo.html_url}" target="_blank">${totalRepo.html_url}</a>`;
+
+
+
+    const image = document.getElementById("image");
+    image.innerHTML = `<img src=${totalRepo.avatar_url}/>`;
+    const detail = document.getElementById("details");
+    detail.innerHTML = `<h1>${totalRepo.name}</h1>
+          <p>${totalRepo.bio}</p>
+          <p>${totalRepo.location}</p>
+          <p>${totalRepo.twitter_username}</p>`;
+    const Repo = await fetch(
+      API + user + "/repos" + `?per_page=${perPage}&page=${current}`
+    );
+    
+    var pageContainer = document.getElementById('page-containers');
+    if (!pageContainer.classList.contains('show-children')) {
+        pageContainer.classList.add('show-children');
+    }
+    
+
+    const data = await Repo.json();
+    if (data.message === "Not Found") {
+      repositoriesContainer.innerHTML = "No repositories found for the user";
+      return;
+    }
+
+    repositoriesContainer.removeChild(load);
+    displayRepositories(data);
+    const repo_tabs_container = document.getElementById("page-shift-container"); 
+    repo_tabs_container.innerHTML = "";
+    cnt=0;
+    createRequiredPage(totalpages);
+  };
+  
+  
 const getUser = async (current) => {
   const user = document.getElementById("input").value;
+  
+  repositoriesContainer.innerHTML = "";
+    const load = document.createElement('div');
+    load.classList.add("loader");
+    repositoriesContainer.appendChild(load);
+  
   const fetchRepo = await fetch(API + user);
   if (!fetchRepo.ok) {
     document.getElementById("main").innerHTML = "<h1>User not found</h1>";
     document.getElementById("main").style.textAlign = "center";    
     return;
   }
+  
+
 
   const totalRepo = await fetchRepo.json();
   totalpages = Math.ceil(totalRepo.public_repos / 10);
@@ -58,14 +144,20 @@ const getUser = async (current) => {
     repositoriesContainer.innerHTML = "No repositories found for the user";
     return;
   }
-    
+  repositoriesContainer.removeChild(load);
   displayRepositories(data);
+
+
+  // const repo_tabs_container = document.getElementById("page-shift-container"); 
+  // repo_tabs_container.innerHTML = "";
   createRequiredPage(totalpages);
 };
 
-function displayRepositories(repositories) {
-  repositoriesContainer.innerHTML = "";
 
+
+function displayRepositories(repositories) {
+  // repositoriesContainer.innerHTML = "";
+  
   repositories.forEach((repo) => {
     const repoLink = document.createElement("a");
     repoLink.href = repo.html_url;
@@ -77,6 +169,7 @@ function displayRepositories(repositories) {
     repoElement.appendChild(repoLink);
 
     const descriptionElement = document.createElement("p");
+    // descriptionElement.classList.add("repo_description");
     descriptionElement.textContent =
       repo.description || "No description available.";
     repoElement.appendChild(descriptionElement);
@@ -93,9 +186,11 @@ function displayRepositories(repositories) {
 function createRequiredPage(totalpages) {
   const pageShiftContainer = document.getElementById("page-shift-container");
   let num = parseInt(totalpages);
+  console.log(cnt)
   if (cnt == 0) {
     for (let i = 1; i <= num; ++i) {
       const listItem = document.createElement("li");
+      listItem.id = `list-${i}`
       listItem.classList.add(`list`);
       listItem.textContent = i;
       pageShiftContainer.appendChild(listItem);
@@ -103,24 +198,23 @@ function createRequiredPage(totalpages) {
     }
   }
   cnt++;
+  console.log("test:",pageShiftContainer)
 }
 
 function handleListItemClick(event) {
-  event.target.style.backgroundColor = "blue";
+  activeTab = parseInt(event.target.id.slice(5,));
+
   const innertext = event.target.innerText;
   getUser(innertext);
   currentPage = innertext;
   document.querySelectorAll(".list").forEach(function (item) {
-    item.style.backgroundColor = "";
+    item.style.backgroundColor = "white";
   });
-
-  const clickedItem = event.target;
-  clickedItem.style.backgroundColor = "green";
+  event.target.style.backgroundColor = "#ADD8E6";
 }
 
-// const getRequiredRepo = () => {
-//   const desired_Repository = document.getElementsByClassName("user_desired_page")[0].value;
-//   perPage = parseInt(desired_Repository);
-//   console.log(desired_Repository);
-//   getUser(currentPage);
-// }
+
+
+
+
+

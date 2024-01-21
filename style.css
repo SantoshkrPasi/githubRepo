@@ -47,18 +47,45 @@ body {
     border-radius: 50%;
 }
 
+#url
+{
+    display: flex;
+   
+    align-items: center;
+    gap: 5px;
+    margin: 30px 0px 40px 40px;
+}
+
+#url img
+{
+ width: 30px;
+}
+
 
 #repositories {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
     gap: 10px;
     padding: 10px;
+    height: 75vh;
+    overflow-y: scroll;
+    position: relative;
+    /* background-color: aqua; */
 }
 
 .repository {
     margin: 10px;
     border: 1px solid black;
     padding: 10px;
+    text-wrap:wrap;
+
+}
+
+.repo_description
+{
+    /* background-color: aqua; */
+    font-size: small;
+    font-family:monospace;
 }
 
 .repository button {
@@ -160,3 +187,36 @@ body {
     font-size: 20px;
     }
 }
+
+
+
+/* loading */
+.loader {
+    border: 16px solid #f3f3f3;
+    border-radius: 50%;
+    border-top: 16px solid #3498db;
+    width: 120px;
+    height: 120px;
+    -webkit-animation: spin 2s linear infinite; /* Safari */
+    animation: spin 2s linear infinite;
+/* background-color: #3498db; */
+position: absolute;
+top: 30%;
+left: 45%;
+/* display:none; */
+  }
+  
+.loaderActive
+{
+    display:none;
+}
+  /* Safari */
+  @-webkit-keyframes spin {
+    0% { -webkit-transform: rotate(0deg); }
+    100% { -webkit-transform: rotate(360deg); }
+  }
+  
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
