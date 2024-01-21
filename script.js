@@ -1,19 +1,14 @@
 const API = "https://api.github.com/users/";
 let url = null;
 let currentPage = 1;
-const perPage = 10;
+let perPage = 10;
 let repoArr = [];
 let cnt = 0;
 let particular_page = null;
 let totalpages = null;
 let repositoriesContainer = document.getElementById("repositories");
 
-const create_prev_next_button = () => {
-  const element = document.getElementById("page-containers");
-  element.innerHTML = `<button id="prev">prev</button>
-    <ul id="page-shift-container">          
-    </ul>
-    <button id="next">next</button>`;
+
   const prev_button = document.getElementById("prev");
   const next_button = document.getElementById("next");
   prev_button.addEventListener("click", () => {
@@ -24,17 +19,24 @@ next_button.addEventListener('click', () => {
     currentPage = currentPage < totalpages ? currentPage + 1 : totalpages;
     getUser(currentPage);
   });
-};
+
+
+
+ 
+
 
 const getUser = async (current) => {
-  // create the div for prev next
-  create_prev_next_button();
-  // --------------------------
   const user = document.getElementById("input").value;
   const fetchRepo = await fetch(API + user);
+  if (!fetchRepo.ok) {
+    document.getElementById("main").innerHTML = "<h1>User not found</h1>";
+    document.getElementById("main").style.textAlign = "center";    
+    return;
+  }
+
   const totalRepo = await fetchRepo.json();
   totalpages = Math.ceil(totalRepo.public_repos / 10);
-  document.getElementById("url").innerHTML = `<p>${totalRepo.url}</p>`;
+  document.getElementById("url").innerHTML = `<a href="${totalRepo.html_url}" target="_blank">${totalRepo.html_url}</a>`;
   const image = document.getElementById("image");
   image.innerHTML = `<img src=${totalRepo.avatar_url}/>`;
   const detail = document.getElementById("details");
@@ -45,7 +47,18 @@ const getUser = async (current) => {
   const Repo = await fetch(
     API + user + "/repos" + `?per_page=${perPage}&page=${current}`
   );
+  
+  var pageContainer = document.getElementById('page-containers');
+  if (!pageContainer.classList.contains('show-children')) {
+      pageContainer.classList.add('show-children');
+  }
+  
   const data = await Repo.json();
+  if (data.message === "Not Found") {
+    repositoriesContainer.innerHTML = "No repositories found for the user";
+    return;
+  }
+    
   displayRepositories(data);
   createRequiredPage(totalpages);
 };
@@ -79,7 +92,6 @@ function displayRepositories(repositories) {
 
 function createRequiredPage(totalpages) {
   const pageShiftContainer = document.getElementById("page-shift-container");
-  pageShiftContainer.innerHTML = '';
   let num = parseInt(totalpages);
   if (cnt == 0) {
     for (let i = 1; i <= num; ++i) {
@@ -105,3 +117,10 @@ function handleListItemClick(event) {
   const clickedItem = event.target;
   clickedItem.style.backgroundColor = "green";
 }
+
+// const getRequiredRepo = () => {
+//   const desired_Repository = document.getElementsByClassName("user_desired_page")[0].value;
+//   perPage = parseInt(desired_Repository);
+//   console.log(desired_Repository);
+//   getUser(currentPage);
+// }

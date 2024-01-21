@@ -13,22 +13,23 @@
         <input type="text" id="input" placeholder="Enter User" >
         <button onclick="getUser()"  type="submit">Search</button>
     </div>
-    <main id="loading-skeleton">
+  
+    <main id="main">
         <div class="profile">
             <div id="image" class="image-container">
             </div>
-            <div id="details">
+            <div id="details" class="details-container">
             </div>
         </div>
         <div id="url"></div>
-        <div id="repositories"></div>
-        <!-- <div id="pagination"></div> -->
+        <div id="required_repo"></div>
+        <div id="repositories"></div> 
     </main>
-    <div id="page-containers">
-        <!-- <button id="prev">prev</button>
+    <div id="page-containers" class="toggle">
+        <button id="prev">prev</button>
         <ul  id="page-shift-container">          
         </ul>
-        <button id="next">next</button> -->
+        <button id="next">next</button>
     </div>
 
     <script src="script.js"></script>
