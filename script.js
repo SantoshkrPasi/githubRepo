@@ -49,10 +49,7 @@ next_button.addEventListener('click', () => {
     load.classList.add("loader");
     repositoriesContainer.appendChild(load);
 
-    // const loader= document.getElementById("loader-container")
-    // console.log("loader:",loader)
-    // loader.classList.add('loaderActive')
-    
+       
     const user = document.getElementById("input").value;
     const fetchRepo = await fetch(API + user);
     if (!fetchRepo.ok) {
@@ -146,17 +143,12 @@ const getUser = async (current) => {
   repositoriesContainer.removeChild(load);
   displayRepositories(data);
 
-
-  // const repo_tabs_container = document.getElementById("page-shift-container"); 
-  // repo_tabs_container.innerHTML = "";
   createRequiredPage(totalpages);
 };
 
 
 
 async function displayRepositories(repositories) {
-  // repositoriesContainer.innerHTML = "";
-  // repositories.
   
   for(let i = 0 ; i <repositories.length ; ++i)
   {
@@ -171,8 +163,7 @@ async function displayRepositories(repositories) {
     repoElement.appendChild(repoLink);
 
     const descriptionElement = document.createElement("p");
-    // descriptionElement.classList.add("repo_description");
-    descriptionElement.textContent =
+        descriptionElement.textContent =
       repo.description || "No description available.";
     repoElement.appendChild(descriptionElement);
       
@@ -186,7 +177,7 @@ async function displayRepositories(repositories) {
     })
     repositoriesContainer.appendChild(repoElement);
     repoArr.push(repoElement);
-    // console.log(Object.keys(langData));
+   
   }
 }
 
