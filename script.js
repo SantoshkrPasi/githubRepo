@@ -43,6 +43,7 @@ next_button.addEventListener('click', () => {
 
  
   const searchUser = async (current) => {
+    document.getElementById("errorHandle").innerHTML="";
    document.getElementById("repo-count").style.display='block';
     repositoriesContainer.innerHTML = "";
     const load = document.createElement('div');
@@ -53,8 +54,12 @@ next_button.addEventListener('click', () => {
     const user = document.getElementById("input").value;
     const fetchRepo = await fetch(API + user);
     if (!fetchRepo.ok) {
-      document.getElementById("main").innerHTML = "<h1>User not found</h1>";
-      document.getElementById("main").style.textAlign = "center";    
+      document.getElementById("errorHandle").innerHTML = "<h1>User not found</h1>";
+      document.getElementById("errorHandle").style.textAlign = "center";   
+      document.getElementById("image").innerHTML = "";   
+      document.getElementById("details").innerHTML = "";   
+      document.getElementById("url").innerHTML = "";   
+      document.getElementById("repositories").innerHTML = "";  
       return;
     }
   

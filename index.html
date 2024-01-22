@@ -9,11 +9,12 @@
 </head>
 
 <body>
-    <div id="search-bar">
+    <form onsubmit="searchUser(); return false;" id="search-bar">
         <input type="text" id="input" placeholder="Enter User" >
-        <button onclick="searchUser(); "  type="submit">Search</button>
-    </div>
+        <button type="submit">Search</button>       
+    </form>
     <main id="main">
+        <div id="errorHandle"></div>
         <div class="profile">
             <div id="image" class="image-container">
             </div>
